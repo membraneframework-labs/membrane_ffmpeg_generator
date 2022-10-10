@@ -7,9 +7,6 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
   alias Membrane.FFmpegGenerator.Types.SupportedFileFormats
 
 
-  @doc """
-
-  """
   @spec generate_video_without_audio(RawVideo.t(), Time.t(),
     SupportedFileFormat.video_codec_file_format_t | SupportedFileFormats.video_container_file_format_t,
     keyword()) :: any()
@@ -153,7 +150,7 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
       :I420 -> {:ok, "yuv420p"}
       :I422 -> {:ok, "yuv422p"}
       :I444 -> {:ok, "yuv444p"}
-      :RGB -> {:ok, "rgb"}
+      :RGB -> {:ok, "rgb24"}
       :RGBA -> {:ok, "rgba"}
       :BGRA -> {:ok, "bgra"}
     end

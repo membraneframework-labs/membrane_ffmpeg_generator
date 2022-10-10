@@ -38,4 +38,8 @@ defmodule Membrane.FFmpegGenerator.Types.SupportedFileFormats.Video do
   def container_file_format() do
     @container_file_format
   end
+
+  def pixel_formats() do
+    @pixel_formats
+  end
 end
