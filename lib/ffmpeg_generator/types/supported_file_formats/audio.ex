@@ -1,7 +1,15 @@
 defmodule Membrane.FFmpegGenerator.Types.SupportedFileFormats.Audio do
-  @type audio_file_format_t :: :mp3, :mpeg, :flac, :wav
+  @audio_file_formats [:mp3, :mpeg, :flac, :wav]
 
+  @type audio_file_format_t ::
+          unquote(
+            @audio_file_formats
+            |> Enum.map_join(" | ", &inspect/1)
+            |> Code.string_to_quoted!()
+          )
+
+  @spec get_supported_file_formats() :: list(atom())
   def get_supported_file_formats() do
-    [:mp3, :mpeg, :flac, :wav]
+    @audio_file_formats
   end
 end
