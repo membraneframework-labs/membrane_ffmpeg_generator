@@ -155,7 +155,7 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
       end
 
     {:ok, current_working_directory} = File.cwd()
-    output_directory = Keyword.get(options, :output_directory, current_working_directory)
+    output_directory = Keyword.get(options, :output_directory_path, current_working_directory)
 
     :ok =
       case File.exists?(output_directory) do
