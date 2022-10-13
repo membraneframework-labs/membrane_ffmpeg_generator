@@ -2,9 +2,9 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
   @moduledoc """
   Module responsible for generating video files using FFmpeg.
   """
-  alias Membrane.{Time, RawVideo}
   alias Membrane.FFmpegGenerator.Types.{Audio, Options}
   alias Membrane.FFmpegGenerator.Types.SupportedFileFormats
+  alias Membrane.{RawVideo, Time}
 
   @doc """
   Generates video without audio with specified video caps, duration, file format and additional options using FFmpeg.

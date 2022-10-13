@@ -1,6 +1,13 @@
 defmodule Membrane.FFmpegGenerator.Types.SupportedFileFormats.Audio do
+  @moduledoc """
+  Specify supported audio file formats.
+  """
+
   @audio_file_formats [:mp3, :mpeg, :flac, :wav]
 
+  @typedoc """
+  Audio file formats.
+  """
   @type audio_file_format_t ::
           unquote(
             @audio_file_formats

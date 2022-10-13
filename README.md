@@ -43,7 +43,65 @@ file_format = :h264
 ```
 
 More advanced video generation with audio and custom options:
+```elixir
+alias Membrane.FFmpegGenerator.VideoGenerator
+alias Membrane.FFmpegGenerator.Types.Audio
+alias Membrane.RawVideo
 
+video_caps = %RawVideo{
+  width: 3830,
+  height: 2160,
+  framerate: {60, 1},
+  pixel_format: :RGB,
+  aligned: true
+}
+
+duration = 15
+file_format = :mp4
+
+audio_caps = %Audio{
+  frequency: 500,
+  sample_rate: 48_000,
+  beep_factor: 15
+}
+
+file_name = "awesome_video.mp4"
+{:ok, current_working_directory} = File.cwd()
+output_directory_path = Path.join(current_working_directory, "tmp/video")
+
+options = [
+  audio_caps: audio_caps,
+  output_file_name: file_name,
+  output_directory_path: output_directory_path
+]
+
+{:ok, _output_path} = VideoGenerator.generate_video_with_audio(video_caps, duration, file_format, options)
+```
+Audio generation:
+```elixir
+alias Membrane.FFmpegGenerator.AudioGenerator
+alias Membrane.FFmpegGenerator.Types.Audio
+
+audio_caps = %Audio{
+  frequency: 440,
+  sample_rate: 44_100,
+  beep_factor: 0
+}
+
+duration = 20
+file_format = :mp3
+
+file_name = "epic_audio.mp3"
+{:ok, current_working_directory} = File.cwd()
+output_directory_path = Path.join(current_working_directory, "tmp/audio")
+
+options = [
+  output_file_name: file_name,
+  output_directory_path: output_directory_path
+]
+
+{:ok, _output_path} = AudioGenerator.generate_audio(audio_caps, duration, file_format, options)
+```
 ## Copyright and License
 
 Copyright 2020, [Software Mansion](https://swmansion.com/?utm_source=git&utm_medium=readme&utm_campaign=membrane_ffmpeg_generator)
