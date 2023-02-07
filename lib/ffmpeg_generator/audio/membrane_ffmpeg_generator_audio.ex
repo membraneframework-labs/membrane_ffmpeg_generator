@@ -10,6 +10,11 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
 
   @doc """
   Generates audio using FFmpeg with specified audio caps, duration, file format and additional options.
+  # Values
+  - audio_caps: specify generated audio parameters
+  - duration: length of generated audio file
+  - file_format: format of generated file, such as :mp3, :mpeg, :flac, :wav
+  - options: other optional arguments, e.x. output_path
   """
   @spec generate_audio(
           Audio.t(),

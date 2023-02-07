@@ -9,6 +9,12 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
 
   @doc """
   Generates video without audio with specified video caps, duration, file format and additional options using FFmpeg.
+
+  # Values
+  - video_caps: specify generated video parameters
+  - duration: length of generated video
+  - file_format: format of generated file, e.x. :mp4, :h264, :mov, :raw, :mkv
+  - options: other optional arguments, e.x. output_path
   """
   @spec generate_video_without_audio(
           RawVideo.t(),
@@ -69,6 +75,12 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
   @doc """
   Generates video without audio with specified video caps, duration, file format and additional options using FFmpeg.
   Audio caps can be specified in options.
+
+  # Values
+  - video_caps: specify generated video parameters
+  - duration: length of generated video
+  - file_format: format of generated file, e.x. :mp4, :h264, :mov, :raw, :mkv
+  - options: other optional arguments, e.x. output_path, audio_caps
   """
   @spec generate_video_with_audio(
           RawVideo.t(),
