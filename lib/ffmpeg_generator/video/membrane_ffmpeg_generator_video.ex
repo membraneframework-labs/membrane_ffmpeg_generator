@@ -136,37 +136,52 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
           Options.t()
         ) :: {:ok, String.t()}
   def get_output_path(caps, duration, file_format, has_audio?, options) do
-    {:ok, file_format_string} = get_file_format_as_string(file_format)
-    {:ok, framerate} = get_framerate_as_float(caps.framerate)
+    {:ok, current_working_directory} = File.cwd()
 
-    file_name =
-      case Keyword.has_key?(options, :output_file_name) do
-        true ->
-          Keyword.get(options, :output_file_name)
+    path =
+      Keyword.get(
+        options,
+        :output_path,
+        current_working_directory
+      )
 
-        false ->
-          case has_audio? do
-            true ->
-              "output_video_with_audio_#{duration}s_#{caps.width}x#{caps.height}_#{round(framerate)}fps.#{file_format_string}"
-
-            false ->
-              "output_video_#{duration}s_#{caps.width}x#{caps.height}_#{round(framerate)}fps.#{file_format_string}"
-          end
+    path =
+      if File.dir?(path) do
+        Path.join(path, get_output_file_name(caps, duration, file_format, has_audio?))
+      else
+        path
       end
 
-    {:ok, current_working_directory} = File.cwd()
-    output_directory = Keyword.get(options, :output_directory_path, current_working_directory)
-
     :ok =
-      case File.exists?(output_directory) do
+      case File.exists?(Path.dirname(path)) do
         false ->
-          File.mkdir_p(output_directory)
+          File.mkdir_p(Path.dirname(path))
 
         _other ->
           :ok
       end
 
-    {:ok, Path.join(output_directory, file_name)}
+    {:ok, path}
+  end
+
+  @spec get_output_file_name(
+          RawVideo.t(),
+          Time.t(),
+          SupportedFileFormats.Video.codec_file_format_t()
+          | SupportedFileFormats.Video.container_file_format_t(),
+          boolean()
+        ) :: String.t()
+  defp get_output_file_name(caps, duration, file_format, has_audio?) do
+    {:ok, file_format_string} = get_file_format_as_string(file_format)
+    {:ok, framerate} = get_framerate_as_float(caps.framerate)
+
+    case has_audio? do
+      true ->
+        "output_video_with_audio_#{duration}s_#{caps.width}x#{caps.height}_#{round(framerate)}fps.#{file_format_string}"
+
+      false ->
+        "output_video_#{duration}s_#{caps.width}x#{caps.height}_#{round(framerate)}fps.#{file_format_string}"
+    end
   end
 
   defp get_arguments_values(video_caps, duration, file_format, has_audio?, options) do

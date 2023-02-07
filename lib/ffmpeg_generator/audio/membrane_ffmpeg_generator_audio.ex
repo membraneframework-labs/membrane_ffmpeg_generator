@@ -57,27 +57,35 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
         ) :: {:ok, String.t()}
   def get_audio_output_path(audio_caps, duration, file_format, options) do
     {:ok, file_format_string} = get_file_format_as_string(file_format)
+    {:ok, current_working_directory} = File.cwd()
 
-    file_name =
+    path =
       Keyword.get(
         options,
-        :output_file_name,
-        "output_audio_#{duration}s_#{audio_caps.frequency}hz_#{audio_caps.sample_rate}_samples_#{audio_caps.beep_factor}_beeps.#{file_format_string}"
+        :output_path,
+        current_working_directory
       )
 
-    {:ok, current_working_directory} = File.cwd()
-    output_directory = Keyword.get(options, :output_directory_path, current_working_directory)
+    path =
+      if File.dir?(path) do
+        Path.join(
+          path,
+          "output_audio_#{duration}s_#{audio_caps.frequency}hz_#{audio_caps.sample_rate}_samples_#{audio_caps.beep_factor}_beeps.#{file_format_string}"
+        )
+      else
+        path
+      end
 
     :ok =
-      case File.exists?(output_directory) do
+      case File.exists?(Path.dirname(path)) do
         false ->
-          File.mkdir_p(output_directory)
+          File.mkdir_p(Path.dirname(path))
 
         _other ->
           :ok
       end
 
-    {:ok, Path.join(output_directory, file_name)}
+    {:ok, path}
   end
 
   @spec get_file_format_as_string(SupportedFileFormats.Audio.audio_file_format_t()) ::

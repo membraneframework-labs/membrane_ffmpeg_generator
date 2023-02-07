@@ -52,7 +52,7 @@ defmodule Membrane.FFmpegGenerator.Types.SupportedFileFormats.Video do
     @container_file_format
   end
 
-  @spec pixel_formats :: list()
+  @spec pixel_formats :: list(atom())
   def pixel_formats() do
     @pixel_formats
   end

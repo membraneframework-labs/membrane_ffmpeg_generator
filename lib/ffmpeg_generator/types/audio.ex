@@ -27,6 +27,6 @@ defmodule Membrane.FFmpegGenerator.Types.Audio do
           beep_factor: beep_factor_t()
         }
 
-  @enforce_keys [:frequency, :sample_rate, :beep_factor]
-  defstruct @enforce_keys
+  @enforce_keys [:frequency, :sample_rate]
+  defstruct [:frequency, :sample_rate, beep_factor: 0]
 end

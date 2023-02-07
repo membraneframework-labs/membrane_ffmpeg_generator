@@ -6,8 +6,6 @@
 
 This repository contains FFmpeg video and audio generator for tests, benchmarks and demos.
 
-Check out different branches for other flavours of template.
-
 It is part of [Membrane Multimedia Framework](https://membraneframework.org).
 
 ## Installation
@@ -66,13 +64,10 @@ audio_caps = %Audio{
 }
 
 file_name = "awesome_video.mp4"
-{:ok, current_working_directory} = File.cwd()
-output_directory_path = Path.join(current_working_directory, "tmp/video")
 
 options = [
   audio_caps: audio_caps,
-  output_file_name: file_name,
-  output_directory_path: output_directory_path
+  output_path: file_name,
 ]
 
 {:ok, _output_path} = VideoGenerator.generate_video_with_audio(video_caps, duration, file_format, options)
@@ -92,12 +87,9 @@ duration = 20
 file_format = :mp3
 
 file_name = "epic_audio.mp3"
-{:ok, current_working_directory} = File.cwd()
-output_directory_path = Path.join(current_working_directory, "tmp/audio")
 
 options = [
-  output_file_name: file_name,
-  output_directory_path: output_directory_path
+  output_path: file_name,
 ]
 
 {:ok, _output_path} = AudioGenerator.generate_audio(audio_caps, duration, file_format, options)
