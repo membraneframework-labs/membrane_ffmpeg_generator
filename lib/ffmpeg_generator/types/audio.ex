@@ -1,6 +1,6 @@
 defmodule Membrane.FFmpegGenerator.Types.Audio do
   @moduledoc """
-  Define Audio struct for audio caps specification.
+  Define Audio struct for audio format specification.
   """
 
   @typedoc """
@@ -19,7 +19,7 @@ defmodule Membrane.FFmpegGenerator.Types.Audio do
   @type beep_factor_t :: non_neg_integer()
 
   @typedoc """
-  Audio caps type for specifying properties of generated multimedia file.
+  Audio format type for specifying properties of generated multimedia file.
   """
   @type t :: %__MODULE__{
           frequency: frequency_t(),

@@ -6,7 +6,7 @@ defmodule Membrane.FFmpegGenerator.Test.AudioGenerationTest do
 
   @audio_file_formats SupportedFileFormats.Audio.get_supported_file_formats()
   @test_audio_duration 5
-  @test_audio_caps %Audio{frequency: 440, sample_rate: 44_100, beep_factor: 10}
+  @test_audio_format %Audio{frequency: 440, sample_rate: 44_100, beep_factor: 10}
 
   {:ok, current_working_directory} = File.cwd()
   @test_output_directory Path.join(current_working_directory, "/test/tmp/fixtures")
@@ -27,7 +27,7 @@ defmodule Membrane.FFmpegGenerator.Test.AudioGenerationTest do
   defp test_audio_generation(file_format, options) do
     {:ok, output_path} =
       AudioGenerator.get_audio_output_path(
-        @test_audio_caps,
+        @test_audio_format,
         @test_audio_duration,
         file_format,
         options
@@ -35,7 +35,7 @@ defmodule Membrane.FFmpegGenerator.Test.AudioGenerationTest do
 
     assert {:ok, ^output_path} =
              AudioGenerator.generate_audio(
-               @test_audio_caps,
+               @test_audio_format,
                @test_audio_duration,
                file_format,
                options

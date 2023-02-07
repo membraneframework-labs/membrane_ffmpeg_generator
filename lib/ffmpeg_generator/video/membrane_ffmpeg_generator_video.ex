@@ -8,10 +8,10 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
   alias Membrane.{RawVideo, Time}
 
   @doc """
-  Generates video without audio with specified video caps, duration, file format and additional options using FFmpeg.
+  Generates video without audio with specified video format, duration, file format and additional options using FFmpeg.
 
   # Values
-  - video_caps: specify generated video parameters
+  - video_format: specify generated video parameters
   - duration: length of generated video
   - file_format: format of generated file, e.x. :mp4, :h264, :mov, :raw, :mkv
   - options: other optional arguments, e.x. output_path
@@ -24,13 +24,13 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
           Options.t()
         ) ::
           {:ok, String.t()} | {:error, String.t()}
-  def generate_video_without_audio(video_caps, duration, file_format, options \\ []) do
+  def generate_video_without_audio(video_format, duration, file_format, options \\ []) do
     {:ok, output_path, framerate, ffmpeg_pixel_format} =
-      get_arguments_values(video_caps, duration, file_format, false, options)
+      get_arguments_values(video_format, duration, file_format, false, options)
 
     video_description =
       "testsrc=duration=#{duration}" <>
-        ":size=#{video_caps.width}x#{video_caps.height}" <>
+        ":size=#{video_format.width}x#{video_format.height}" <>
         ":rate=#{framerate}," <>
         "format=#{ffmpeg_pixel_format}"
 
@@ -73,14 +73,14 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
   end
 
   @doc """
-  Generates video without audio with specified video caps, duration, file format and additional options using FFmpeg.
-  Audio caps can be specified in options.
+  Generates video without audio with specified video format, duration, file format and additional options using FFmpeg.
+  Audio format can be specified in options.
 
   # Values
-  - video_caps: specify generated video parameters
+  - video_format: specify generated video parameters
   - duration: length of generated video
   - file_format: format of generated file, e.x. :mp4, :h264, :mov, :raw, :mkv
-  - options: other optional arguments, e.x. output_path, audio_caps
+  - options: other optional arguments, e.x. output_path, audio_format
   """
   @spec generate_video_with_audio(
           RawVideo.t(),
@@ -89,21 +89,21 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
           | SupportedFileFormats.Video.container_file_format_t(),
           Options.t()
         ) :: {:ok, String.t()} | {:error, String.t()}
-  def generate_video_with_audio(video_caps, duration, file_format, options \\ []) do
-    {:ok, output_path, framerate, ffmpeg_pixel_format, audio_caps} =
-      get_arguments_values(video_caps, duration, file_format, true, options)
+  def generate_video_with_audio(video_format, duration, file_format, options \\ []) do
+    {:ok, output_path, framerate, ffmpeg_pixel_format, audio_format} =
+      get_arguments_values(video_format, duration, file_format, true, options)
 
     video_description =
       "testsrc=duration=#{duration}" <>
-        ":size=#{video_caps.width}x#{video_caps.height}" <>
+        ":size=#{video_format.width}x#{video_format.height}" <>
         ":rate=#{framerate}," <>
         "format=#{ffmpeg_pixel_format}"
 
     audio_description =
       "sine=" <>
-        "frequency=#{audio_caps.frequency}" <>
-        ":sample_rate=#{audio_caps.sample_rate}" <>
-        ":beep_factor=#{audio_caps.beep_factor}" <>
+        "frequency=#{audio_format.frequency}" <>
+        ":sample_rate=#{audio_format.sample_rate}" <>
+        ":beep_factor=#{audio_format.beep_factor}" <>
         ":duration=#{duration}"
 
     filter = "[0][0]amerge=inputs=2"
@@ -148,7 +148,7 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
           boolean(),
           Options.t()
         ) :: {:ok, String.t()}
-  def get_output_path(caps, duration, file_format, has_audio?, options) do
+  def get_output_path(format, duration, file_format, has_audio?, options) do
     {:ok, current_working_directory} = File.cwd()
 
     path =
@@ -160,7 +160,7 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
 
     path =
       if Common.is_dir?(path) do
-        Path.join(path, get_output_file_name(caps, duration, file_format, has_audio?))
+        Path.join(path, get_output_file_name(format, duration, file_format, has_audio?))
       else
         path
       end
@@ -184,28 +184,28 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
           | SupportedFileFormats.Video.container_file_format_t(),
           boolean()
         ) :: String.t()
-  defp get_output_file_name(caps, duration, file_format, has_audio?) do
+  defp get_output_file_name(format, duration, file_format, has_audio?) do
     {:ok, file_format_string} = get_file_format_as_string(file_format)
-    {:ok, framerate} = get_framerate_as_float(caps.framerate)
+    {:ok, framerate} = get_framerate_as_float(format.framerate)
 
     case has_audio? do
       true ->
-        "output_video_with_audio_#{duration}s_#{caps.width}x#{caps.height}_#{round(framerate)}fps.#{file_format_string}"
+        "output_video_with_audio_#{duration}s_#{format.width}x#{format.height}_#{round(framerate)}fps.#{file_format_string}"
 
       false ->
-        "output_video_#{duration}s_#{caps.width}x#{caps.height}_#{round(framerate)}fps.#{file_format_string}"
+        "output_video_#{duration}s_#{format.width}x#{format.height}_#{round(framerate)}fps.#{file_format_string}"
     end
   end
 
-  defp get_arguments_values(video_caps, duration, file_format, has_audio?, options) do
-    {:ok, output_path} = get_output_path(video_caps, duration, file_format, has_audio?, options)
-    {:ok, framerate} = get_framerate_as_float(video_caps.framerate)
-    {:ok, ffmpeg_pixel_format} = get_ffmpeg_pixel_format(video_caps.pixel_format)
+  defp get_arguments_values(video_format, duration, file_format, has_audio?, options) do
+    {:ok, output_path} = get_output_path(video_format, duration, file_format, has_audio?, options)
+    {:ok, framerate} = get_framerate_as_float(video_format.framerate)
+    {:ok, ffmpeg_pixel_format} = get_ffmpeg_pixel_format(video_format.pixel_format)
 
     case has_audio? do
       true ->
-        {:ok, audio_caps} = get_audio_caps(options)
-        {:ok, output_path, framerate, ffmpeg_pixel_format, audio_caps}
+        {:ok, audio_format} = get_audio_format(options)
+        {:ok, output_path, framerate, ffmpeg_pixel_format, audio_format}
 
       false ->
         {:ok, output_path, framerate, ffmpeg_pixel_format}
@@ -236,9 +236,9 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
     end
   end
 
-  @spec get_audio_caps(Options.t()) :: {:ok, Audio}
-  defp get_audio_caps(options) do
-    {:ok, Keyword.get(options, :audio_caps, Options.get_default_audio_caps())}
+  @spec get_audio_format(Options.t()) :: {:ok, Audio}
+  defp get_audio_format(options) do
+    {:ok, Keyword.get(options, :audio_format, Options.get_default_audio_format())}
   end
 
   @spec get_framerate_as_float(RawVideo.framerate_t()) :: {:ok, float()}

@@ -21,13 +21,15 @@ end
 ```
 
 ## Usage
+
 Simple generation of video without audio:
+
 ```elixir
 alias Membrane.FFmpegGenerator.VideoGenerator
 alias Membrane.FFmpegGenerator.Types.Audio
 alias Membrane.RawVideo
 
-video_caps = %RawVideo{
+video_format = %RawVideo{
   width: 1920,
   height: 1080,
   framerate: {30, 1},
@@ -37,16 +39,17 @@ video_caps = %RawVideo{
 
 duration = 10
 file_format = :h264
-{:ok, _output_path} = VideoGenerator.generate_video_without_audio(video_caps, duration, file_format)
+{:ok, _output_path} = VideoGenerator.generate_video_without_audio(video_format, duration, file_format)
 ```
 
 More advanced video generation with audio and custom options:
+
 ```elixir
 alias Membrane.FFmpegGenerator.VideoGenerator
 alias Membrane.FFmpegGenerator.Types.Audio
 alias Membrane.RawVideo
 
-video_caps = %RawVideo{
+video_format = %RawVideo{
   width: 3830,
   height: 2160,
   framerate: {60, 1},
@@ -57,7 +60,7 @@ video_caps = %RawVideo{
 duration = 15
 file_format = :mp4
 
-audio_caps = %Audio{
+audio_format = %Audio{
   frequency: 500,
   sample_rate: 48_000,
   beep_factor: 15
@@ -66,18 +69,20 @@ audio_caps = %Audio{
 file_name = "awesome_video.mp4"
 
 options = [
-  audio_caps: audio_caps,
+  audio_format: audio_format,
   output_path: file_name,
 ]
 
-{:ok, _output_path} = VideoGenerator.generate_video_with_audio(video_caps, duration, file_format, options)
+{:ok, _output_path} = VideoGenerator.generate_video_with_audio(video_format, duration, file_format, options)
 ```
+
 Audio generation:
+
 ```elixir
 alias Membrane.FFmpegGenerator.AudioGenerator
 alias Membrane.FFmpegGenerator.Types.Audio
 
-audio_caps = %Audio{
+audio_format = %Audio{
   frequency: 440,
   sample_rate: 44_100,
   beep_factor: 0
@@ -92,8 +97,9 @@ options = [
   output_path: file_name,
 ]
 
-{:ok, _output_path} = AudioGenerator.generate_audio(audio_caps, duration, file_format, options)
+{:ok, _output_path} = AudioGenerator.generate_audio(audio_format, duration, file_format, options)
 ```
+
 ## Copyright and License
 
 Copyright 2020, [Software Mansion](https://swmansion.com/?utm_source=git&utm_medium=readme&utm_campaign=membrane_ffmpeg_generator)

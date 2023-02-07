@@ -9,9 +9,9 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
   alias Membrane.Time
 
   @doc """
-  Generates audio using FFmpeg with specified audio caps, duration, file format and additional options.
+  Generates audio using FFmpeg with specified audio format, duration, file format and additional options.
   # Values
-  - audio_caps: specify generated audio parameters
+  - audio_format: specify generated audio parameters
   - duration: length of generated audio file
   - file_format: format of generated file, such as :mp3, :mpeg, :flac, :wav
   - options: other optional arguments, e.x. output_path
@@ -23,14 +23,14 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
           Options.t()
         ) ::
           {:ok, String.t()} | {:error, String.t()}
-  def generate_audio(audio_caps, duration, file_format, options \\ []) do
-    {:ok, output_path} = get_audio_output_path(audio_caps, duration, file_format, options)
+  def generate_audio(audio_format, duration, file_format, options \\ []) do
+    {:ok, output_path} = get_audio_output_path(audio_format, duration, file_format, options)
 
     audio_description =
       "sine=" <>
-        "frequency=#{audio_caps.frequency}" <>
-        ":sample_rate=#{audio_caps.sample_rate}" <>
-        ":beep_factor=#{audio_caps.beep_factor}" <>
+        "frequency=#{audio_format.frequency}" <>
+        ":sample_rate=#{audio_format.sample_rate}" <>
+        ":beep_factor=#{audio_format.beep_factor}" <>
         ":duration=#{duration}"
 
     command_options = [
@@ -61,7 +61,7 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
           SupportedFileFormats.Audio.audio_file_format_t(),
           Options.t()
         ) :: {:ok, String.t()}
-  def get_audio_output_path(audio_caps, duration, file_format, options) do
+  def get_audio_output_path(audio_format, duration, file_format, options) do
     {:ok, file_format_string} = get_file_format_as_string(file_format)
     {:ok, current_working_directory} = File.cwd()
 
@@ -76,7 +76,7 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
       if Common.is_dir?(path) do
         Path.join(
           path,
-          "output_audio_#{duration}s_#{audio_caps.frequency}hz_#{audio_caps.sample_rate}_samples_#{audio_caps.beep_factor}_beeps.#{file_format_string}"
+          "output_audio_#{duration}s_#{audio_format.frequency}hz_#{audio_format.sample_rate}_samples_#{audio_format.beep_factor}_beeps.#{file_format_string}"
         )
       else
         path
