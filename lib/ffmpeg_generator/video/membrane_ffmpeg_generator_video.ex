@@ -2,6 +2,7 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
   @moduledoc """
   Module responsible for generating video files using FFmpeg.
   """
+  alias Membrane.FFmpegGenerator.Common
   alias Membrane.FFmpegGenerator.Types.{Audio, Options}
   alias Membrane.FFmpegGenerator.Types.SupportedFileFormats
   alias Membrane.{RawVideo, Time}
@@ -146,7 +147,7 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
       )
 
     path =
-      if File.dir?(path) do
+      if Common.is_dir?(path) do
         Path.join(path, get_output_file_name(caps, duration, file_format, has_audio?))
       else
         path

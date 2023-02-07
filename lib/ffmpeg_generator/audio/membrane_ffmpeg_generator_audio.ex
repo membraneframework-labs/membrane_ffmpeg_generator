@@ -3,6 +3,7 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
   Module responsible for generating audio files using FFmpeg.
   """
 
+  alias Membrane.FFmpegGenerator.Common
   alias Membrane.FFmpegGenerator.Types.{Audio, Options}
   alias Membrane.FFmpegGenerator.Types.SupportedFileFormats
   alias Membrane.Time
@@ -67,7 +68,7 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
       )
 
     path =
-      if File.dir?(path) do
+      if Common.is_dir?(path) do
         Path.join(
           path,
           "output_audio_#{duration}s_#{audio_caps.frequency}hz_#{audio_caps.sample_rate}_samples_#{audio_caps.beep_factor}_beeps.#{file_format_string}"

@@ -24,7 +24,7 @@ defmodule Membrane.FFmpegGenerator.Test.VideoGenerationTest do
     Enum.map(@pixel_formats, fn pixel_format ->
       describe "video generation in #{file_format} file format, #{pixel_format} pixel format " do
         test "video without audio" do
-          options = [output_directory_path: @test_output_directory]
+          options = [output_path: @test_output_directory]
 
           test_video_without_audio_generation(
             unquote(file_format),
@@ -36,7 +36,7 @@ defmodule Membrane.FFmpegGenerator.Test.VideoGenerationTest do
         case Enum.member?(SupportedFileFormats.Video.container_file_format(), file_format) do
           true ->
             test "video with audio" do
-              options = [output_directory_path: @test_output_directory]
+              options = [output_path: @test_output_directory]
 
               test_video_with_audio_generation(
                 unquote(file_format),

@@ -42,7 +42,7 @@ defmodule Membrane.FFmpegGenerator.Types.Options do
   def get_default_audio_caps() do
     %Audio{
       frequency: @default_audio_frequency,
-      sample_rate: @default_audio_sample_rate,
+      sample_rate: @default_audio_sample_rate
     }
   end
 end
