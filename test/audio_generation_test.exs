@@ -25,15 +25,7 @@ defmodule Membrane.FFmpegGenerator.Test.AudioGenerationTest do
   end)
 
   defp test_audio_generation(file_format, options) do
-    {:ok, output_path} =
-      AudioGenerator.get_audio_output_path(
-        @test_audio_format,
-        @test_audio_duration,
-        file_format,
-        options
-      )
-
-    assert {:ok, ^output_path} =
+    assert {:ok, output_path} =
              AudioGenerator.generate_audio(
                @test_audio_format,
                @test_audio_duration,

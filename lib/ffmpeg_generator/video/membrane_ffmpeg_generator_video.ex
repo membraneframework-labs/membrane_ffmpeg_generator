@@ -212,7 +212,7 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
     end
   end
 
-  @spec get_ffmpeg_pixel_format(SupportedFileFormats.Video.pixel_formats_t()) :: {:ok, String.t()}
+  @spec get_ffmpeg_pixel_format(SupportedFileFormats.Video.pixel_format_t()) :: {:ok, String.t()}
   defp get_ffmpeg_pixel_format(format) do
     case format do
       :I420 -> {:ok, "yuv420p"}

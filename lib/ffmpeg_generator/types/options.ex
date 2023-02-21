@@ -9,7 +9,7 @@ defmodule Membrane.FFmpegGenerator.Types.Options do
 
   @typedoc """
   Optional output file name argument.
-  Represent file name under which generated file will be saved.
+  Represents file name under which generated file will be saved.
   If not specified, file will be saved with name generated from
   arguments passed to generation function. If is path to directory,
   generated file will be saved in specified directory with automatically
@@ -19,7 +19,7 @@ defmodule Membrane.FFmpegGenerator.Types.Options do
 
   @typedoc """
   Optional audio format argument.
-  Represent audio specification for file generated with audio.
+  Represents audio specification for file generated with audio.
   If not specified, audio format will take default values.
   """
   @type audio_format_t :: Audio.t()

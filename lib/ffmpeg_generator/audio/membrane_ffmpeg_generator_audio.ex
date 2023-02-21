@@ -61,7 +61,7 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
           SupportedFileFormats.Audio.audio_file_format_t(),
           Options.t()
         ) :: {:ok, String.t()}
-  def get_audio_output_path(audio_format, duration, file_format, options) do
+  defp get_audio_output_path(audio_format, duration, file_format, options) do
     {:ok, file_format_string} = get_file_format_as_string(file_format)
     {:ok, current_working_directory} = File.cwd()
 

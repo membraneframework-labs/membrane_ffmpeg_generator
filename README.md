@@ -26,7 +26,6 @@ Simple generation of video without audio:
 
 ```elixir
 alias Membrane.FFmpegGenerator.VideoGenerator
-alias Membrane.FFmpegGenerator.Types.Audio
 alias Membrane.RawVideo
 
 video_format = %RawVideo{
