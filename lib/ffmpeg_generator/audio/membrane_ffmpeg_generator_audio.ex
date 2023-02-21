@@ -49,9 +49,10 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
         stderr_to_stdout: true
       )
 
-    case exit_code do
-      0 -> {:ok, output_path}
-      _other -> {:error, "Failed to create file. FFmpeg result: /n" <> result}
+    if exit_code == 0 do
+      {:ok, output_path}
+    else
+      {:error, "Failed to create file. FFmpeg result: /n" <> result}
     end
   end
 
@@ -82,14 +83,9 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
         path
       end
 
-    :ok =
-      case File.exists?(Path.dirname(path)) do
-        false ->
-          File.mkdir_p(Path.dirname(path))
-
-        _other ->
-          :ok
-      end
+    unless File.exists?(Path.dirname(path)) do
+      :ok = File.mkdir_p(Path.dirname(path))
+    end
 
     {:ok, path}
   end
@@ -97,9 +93,10 @@ defmodule Membrane.FFmpegGenerator.AudioGenerator do
   @spec get_file_format_as_string(SupportedFileFormats.Audio.audio_file_format_t()) ::
           {:ok, String.t()} | {:error, String.t()}
   defp get_file_format_as_string(file_format) do
-    case Enum.member?(SupportedFileFormats.Audio.get_supported_file_formats(), file_format) do
-      true -> {:ok, Atom.to_string(file_format)}
-      false -> {:error, "Unsupported file format: #{file_format}"}
+    if Enum.member?(SupportedFileFormats.Audio.get_supported_file_formats(), file_format) do
+      {:ok, Atom.to_string(file_format)}
+    else
+      {:error, "Unsupported file format: #{file_format}"}
     end
   end
 end

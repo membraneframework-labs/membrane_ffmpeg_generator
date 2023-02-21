@@ -33,20 +33,16 @@ defmodule Membrane.FFmpegGenerator.Test.VideoGenerationTest do
           )
         end
 
-        case Enum.member?(SupportedFileFormats.Video.container_file_format(), file_format) do
-          true ->
-            test "video with audio" do
-              options = [output_path: @test_output_directory]
+        if Enum.member?(SupportedFileFormats.Video.container_file_format(), file_format) do
+          test "video with audio" do
+            options = [output_path: @test_output_directory]
 
-              test_video_with_audio_generation(
-                unquote(file_format),
-                unquote(pixel_format),
-                options
-              )
-            end
-
-          false ->
-            nil
+            test_video_with_audio_generation(
+              unquote(file_format),
+              unquote(pixel_format),
+              options
+            )
+          end
         end
       end
     end)

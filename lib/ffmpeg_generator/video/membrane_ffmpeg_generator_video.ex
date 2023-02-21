@@ -66,9 +66,10 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
         stderr_to_stdout: true
       )
 
-    case exit_code do
-      0 -> {:ok, output_path}
-      _other -> {:error, "Failed to generate the file. FFmpeg result: \n" <> result}
+    if exit_code == 0 do
+      {:ok, output_path}
+    else
+      {:error, "Failed to generate the file. FFmpeg result: \n" <> result}
     end
   end
 
@@ -131,12 +132,10 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
         stderr_to_stdout: true
       )
 
-    case exit_code do
-      0 ->
-        {:ok, output_path}
-
-      _other ->
-        {:error, "Failed to generate the file. FFmpeg result: \n" <> result}
+    if exit_code == 0 do
+      {:ok, output_path}
+    else
+      {:error, "Failed to generate the file. FFmpeg result: \n" <> result}
     end
   end
 
@@ -165,14 +164,9 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
         path
       end
 
-    :ok =
-      case File.exists?(Path.dirname(path)) do
-        false ->
-          File.mkdir_p(Path.dirname(path))
-
-        _other ->
-          :ok
-      end
+    unless File.exists?(Path.dirname(path)) do
+      :ok = File.mkdir_p(Path.dirname(path))
+    end
 
     {:ok, path}
   end
@@ -188,12 +182,10 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
     {:ok, file_format_string} = get_file_format_as_string(file_format)
     {:ok, framerate} = get_framerate_as_float(format.framerate)
 
-    case has_audio? do
-      true ->
-        "output_video_with_audio_#{duration}s_#{format.width}x#{format.height}_#{round(framerate)}fps.#{file_format_string}"
-
-      false ->
-        "output_video_#{duration}s_#{format.width}x#{format.height}_#{round(framerate)}fps.#{file_format_string}"
+    if has_audio? do
+      "output_video_with_audio_#{duration}s_#{format.width}x#{format.height}_#{round(framerate)}fps.#{file_format_string}"
+    else
+      "output_video_#{duration}s_#{format.width}x#{format.height}_#{round(framerate)}fps.#{file_format_string}"
     end
   end
 
@@ -202,13 +194,11 @@ defmodule Membrane.FFmpegGenerator.VideoGenerator do
     {:ok, framerate} = get_framerate_as_float(video_format.framerate)
     {:ok, ffmpeg_pixel_format} = get_ffmpeg_pixel_format(video_format.pixel_format)
 
-    case has_audio? do
-      true ->
-        {:ok, audio_format} = get_audio_format(options)
-        {:ok, output_path, framerate, ffmpeg_pixel_format, audio_format}
-
-      false ->
-        {:ok, output_path, framerate, ffmpeg_pixel_format}
+    if has_audio? do
+      {:ok, audio_format} = get_audio_format(options)
+      {:ok, output_path, framerate, ffmpeg_pixel_format, audio_format}
+    else
+      {:ok, output_path, framerate, ffmpeg_pixel_format}
     end
   end
 
