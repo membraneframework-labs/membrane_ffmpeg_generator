@@ -15,7 +15,7 @@ defmodule Membrane.FFmpegGenerator.Types.SupportedFileFormats.Audio do
             |> Code.string_to_quoted!()
           )
 
-  @spec get_supported_file_formats() :: list(atom())
+  @spec get_supported_file_formats() :: list(audio_file_format_t())
   def get_supported_file_formats() do
     @audio_file_formats
   end
