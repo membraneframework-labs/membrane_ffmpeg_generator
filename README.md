@@ -1,7 +1,7 @@
 # Membrane FFmpeg Generator
 
 [![Hex.pm](https://img.shields.io/hexpm/v/membrane_ffmpeg_generator.svg)](https://hex.pm/packages/membrane_ffmpeg_generator)
-[![API Docs](https://img.shields.io/badge/api-docs-yellow.svg?style=flat)](https://hexdocs.pm/membrane_ffmpeg_generator)
+[![API Docs](https://img.shields.io/badge/api-docs-yellow.svg?style=flat)](https://hexdocs.pm/membrane_ffmpeg_generator/)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/membraneframework-labs/membrane_ffmpeg_generator/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/membraneframework-labs/membrane_ffmpeg_generator/tree/master)
 
 This repository contains FFmpeg video and audio generator for tests, benchmarks and demos.
