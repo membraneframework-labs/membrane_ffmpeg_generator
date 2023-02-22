@@ -1,8 +1,8 @@
-defmodule Membrane.Template.Mixfile do
+defmodule Membrane.FFmpegGenerator.Mixfile do
   use Mix.Project
 
   @version "0.1.0"
-  @github_url "https://github.com/membraneframework/membrane_template_plugin"
+  @github_url "https://github.com/membraneframework/ffmpeg_generator"
 
   def project do
     [
@@ -15,11 +15,11 @@ defmodule Membrane.Template.Mixfile do
       dialyzer: dialyzer(),
 
       # hex
-      description: "Template Plugin for Membrane Multimedia Framework",
+      description: "FFmpeg Video and Audio Generator for Membrane Multimedia Framework",
       package: package(),
 
       # docs
-      name: "Membrane Template plugin",
+      name: "Membrane FFmpeg Generator",
       source_url: @github_url,
       homepage_url: "https://membraneframework.org",
       docs: docs()
@@ -37,7 +37,8 @@ defmodule Membrane.Template.Mixfile do
 
   defp deps do
     [
-      {:membrane_core, "~> 0.10.0"},
+      {:membrane_core, "~> 0.11.0"},
+      {:membrane_raw_video_format, "~> 0.2"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:dialyxir, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, ">= 0.0.0", only: :dev, runtime: false}
