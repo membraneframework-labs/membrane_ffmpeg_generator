@@ -2,7 +2,7 @@ defmodule Membrane.FFmpegGenerator.Mixfile do
   use Mix.Project
 
   @version "0.1.0"
-  @github_url "https://github.com/membraneframework/ffmpeg_generator"
+  @github_url "https://github.com/membraneframework-labs/ffmpeg_generator"
 
   def project do
     [
@@ -75,7 +75,7 @@ defmodule Membrane.FFmpegGenerator.Mixfile do
       extras: ["README.md", "LICENSE"],
       formatters: ["html"],
       source_ref: "v#{@version}",
-      nest_modules_by_prefix: [Membrane.Template]
+      nest_modules_by_prefix: [Membrane.FFmpegGenerator]
     ]
   end
 end
