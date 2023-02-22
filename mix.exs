@@ -6,7 +6,7 @@ defmodule Membrane.FFmpegGenerator.Mixfile do
 
   def project do
     [
-      app: :membrane_template_plugin,
+      app: :membrane_ffmpeg_generator,
       version: @version,
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
