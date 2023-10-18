@@ -15,7 +15,7 @@ The package can be installed by adding `membrane_ffmpeg_generator` to your list 
 ```elixir
 def deps do
   [
-    {:membrane_ffmpeg_generator, "~> 0.1.0"}
+    {:membrane_ffmpeg_generator, "~> 0.2.0"}
   ]
 end
 ```
